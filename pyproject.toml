@@ -1,0 +1,19 @@
+[project]
+name = "advancedhpc2026"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Chau Nguyen", email = "npc3036@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "numba>=0.67.0",
+]
+
+[project.scripts]
+advancedhpc2026 = "advancedhpc2026:main"
+
+[build-system]
+requires = ["uv_build>=0.12.19,<0.13.0"]
+build-backend = "uv_build"

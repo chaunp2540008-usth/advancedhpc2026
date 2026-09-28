@@ -1,41 +1,46 @@
-\documentclass[conference]{IEEEtran}
+\documentclass[a4paper,11pt]{article}
+\usepackage[margin=1in]{geometry}
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{booktabs}
-\usepackage{verbatim}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\setlist{noitemsep}
 
 \title{Labwork 2: CUDA Device Information}
-\author{\IEEEauthorblockN{Nguyen Phong Chau}
-\IEEEauthorblockA{Student ID 2540008\\
-University of Science and Technology of Hanoi}
-}
+\author{Nguyen Phong Chau}
+\date{}
 
 \begin{document}
+\maketitle
+
+\section*{Device Summary}
 
 The CUDA runtime is available and correctly detected by Numba. The notebook output confirms that the system has one CUDA-capable device.
 
 \begin{itemize}
     \item CUDA available: Yes
     \item CUDA devices detected: 1
-    \item Compute capability: 7.5
 \end{itemize}
 
 \begin{table}[h]
 \centering
-\begin{tabular}{ll}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{0.42\textwidth}p{0.42\textwidth}}
 \toprule
 Parameter & Value \\
 \midrule
 GPU name & NVIDIA GeForce GTX 1650 Ti with Max-Q Design \\
 Multiprocessor count & 16 \\
 Compute capability & 7.5 \\
-Core count & 1024 \\
-Memory size & 3714.69 MB \\
 Free memory & 3647.50 MB \\
+Total memory & 3714.69 MB \\
 \bottomrule
 \end{tabular}
+\caption{Detected CUDA device information}
 \end{table}
 
-The detected GPU is an NVIDIA GeForce GTX 1650 Ti with Max-Q Design, with 16 multiprocessors and compute capability 7.5. This device is suitable for CUDA programming.
+The detected GPU is an NVIDIA GeForce GTX 1650 Ti with Max-Q Design, with 16 multiprocessors and compute capability 7.5. This device is suitable for CUDA programming and matches the runtime information reported by the notebook.
 
 \end{document}
