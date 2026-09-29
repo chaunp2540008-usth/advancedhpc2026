@@ -1,0 +1,44 @@
+\documentclass{report}
+
+\begin{document}
+\title{Labwork 3: Grayscale conversion using GPU compared to CPU}
+\maketitle
+
+\section{Loading the image}
+
+- numpy version **numpy==2.5.3** cause error, fix:
+```python
+if not hasattr(np, 'row_stack'):
+        np.row_stack = np.vstack
+'''
+
+- PTX version error, fix:
+```python
+from numba import config
+# Direct Numba's JIT infrastructure to safely link against the driver 
+config.CUDA_ENABLE_MINOR_VERSION_COMPATIBILITY = 1
+config.CUDA_LOW_OCCUPANCY_WARNINGS = 0
+
+from numba import cuda
+'''
+
+- Load image:
+```python
+img = plt.imread("cat.jpg")
+pixelCount = img.shape[0] * img.shape[1]
+blockSize = 32
+gridSize = pixelCount // blockSize
+
+# Flatten the image to a 1D array using reshape
+img_flat = img.reshape(pixelCount, 3)
+'''
+
+\section{Grayscale conversion using CPU}
+CPU time - block size 32: 0.7891151905059814 ms
+CPU time - block size 64: 0.785759687423706 ms
+CPU time - block size 128: 0.8031079769134521 ms
+\section{Grayscale conversion using GPU}
+GPU time - block size 32: 0.10245678901234567 ms
+GPU time - block size 64: 0.09719204902648926 ms
+GPU time - block size 128: 0.08712148666381836 ms
+\end{document}
