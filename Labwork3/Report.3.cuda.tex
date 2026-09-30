@@ -48,9 +48,13 @@ hostOutput = devOutput.copy_to_host()
 \end{minipage}
 \end{center}
 
-\noindent Mean time at block size 64 (9 runs): CPU 771.277 ms \quad GPU 1.834 ms
+Mean time at block size 64 (9 runs): CPU 771.277 ms \quad GPU 1.834 ms
 
 \section*{Mean time by block sizes}
+
+The performance of GPU is far better than CPU. The CPU performance is not affected by block size. 
+The block size affects GPU performance heavily at 32, and does not change much at 64, 128, 256, and 512. For GPU, the best block size is 128, which gives the lowest mean time of 1.439 ms.
+
 \begin{table}[htbp]
 \centering
 \caption{Average CPU and GPU processing times by block size}
