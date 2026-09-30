@@ -1,44 +1,75 @@
-\documentclass{report}
+\documentclass[a4paper,11pt]{report}
+\usepackage{geometry}
+\geometry{margin=0.7in}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{booktabs}
 
 \begin{document}
-\title{Labwork 3: Grayscale conversion using GPU compared to CPU}
+\title{Labwork 3: CPU vs GPU Grayscale Conversion}
+\author{Nguyen Phong Chau - 2540008}
 \maketitle
 
-\section{Loading the image}
-
-- numpy version **numpy==2.5.3** cause error, fix:
-```python
-if not hasattr(np, 'row_stack'):
-        np.row_stack = np.vstack
-'''
-
-- PTX version error, fix:
-```python
-from numba import config
-# Direct Numba's JIT infrastructure to safely link against the driver 
-config.CUDA_ENABLE_MINOR_VERSION_COMPATIBILITY = 1
-config.CUDA_LOW_OCCUPANCY_WARNINGS = 0
-
-from numba import cuda
-'''
-
-- Load image:
-```python
+\section*{Code}
+\begin{lstlisting}[language=Python]
+blockSizeValues = [32, 64, 128, 256, 512]
 img = plt.imread("cat.jpg")
 pixelCount = img.shape[0] * img.shape[1]
-blockSize = 32
-gridSize = pixelCount // blockSize
-
-# Flatten the image to a 1D array using reshape
 img_flat = img.reshape(pixelCount, 3)
-'''
 
-\section{Grayscale conversion using CPU}
-CPU time - block size 32: 0.7891151905059814 ms
-CPU time - block size 64: 0.785759687423706 ms
-CPU time - block size 128: 0.8031079769134521 ms
-\section{Grayscale conversion using GPU}
-GPU time - block size 32: 0.10245678901234567 ms
-GPU time - block size 64: 0.09719204902648926 ms
-GPU time - block size 128: 0.08712148666381836 ms
+def grayscale_cpu(src, dst):
+        for i in range(src.shape[0]):
+                g = np.uint8((src[i, 0] + src[i, 1] + src[i, 2]) / 3)
+                dst[i] = g
+
+@cuda.jit
+def grayscale_gpu(src, dst):
+        tidx = cuda.threadIdx.x + cuda.blockIdx.x * cuda.blockDim.x
+        g = np.uint8((src[tidx, 0] + src[tidx, 1] + src[tidx, 2]) / 3)
+        dst[tidx, 0] = dst[tidx, 1] = dst[tidx, 2] = g
+
+devInput = cuda.to_device(img_flat)
+devOutput = cuda.device_array((pixelCount, 3), dtype=np.uint8)
+grayscale_gpu[gridSize, blockSize](devInput, devOutput)
+hostOutput = devOutput.copy_to_host()
+\end{lstlisting}
+
+\section*{Block size 64 output}
+\begin{center}
+\begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cat_gray_cpu_64.jpg}\\
+        CPU
+\end{minipage}\hfill
+\begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{cat_gray_gpu_64.jpg}\\
+        GPU
+\end{minipage}
+\end{center}
+
+\noindent Mean time at block size 64 (9 runs): CPU 771.277 ms \quad GPU 1.834 ms
+
+\section*{Mean time by block sizes}
+\begin{table}[htbp]
+\centering
+\caption{Average CPU and GPU processing times by block size}
+\begin{tabular}{rrr}
+ \toprule
+Block size & CPU (ms) & GPU (ms) \\
+ \midrule
+32  & 796.437 & 151.725 \\
+64  & 771.277 & 1.834   \\
+128 & 773.547 & 1.439   \\
+256 & 773.504 & 1.536   \\
+512 & 779.308 & 1.499   \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.8\textwidth]{relationship.jpg}
+        \caption{Mean time by block size and device.}
+\end{figure}
 \end{document}
