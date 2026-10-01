@@ -38,7 +38,7 @@ hostOutput = devOutput.copy_to_host()
 \begin{center}
 \begin{minipage}{0.48\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{cat_gray_cpu_64.jpg}\\
+        \includegraphics[width=\linewidth]{cat_gray_cpu.jpg}\\
         CPU
 \end{minipage}\hfill
 \begin{minipage}{0.48\textwidth}
@@ -52,21 +52,21 @@ Mean time at block size 64 (9 runs): CPU 771.277 ms \quad GPU 1.834 ms
 
 \section*{Mean time by block sizes}
 
-The performance of GPU is far better than CPU. The CPU performance is not affected by block size. 
-The block size affects GPU performance heavily at 32, and does not change much at 64, 128, 256, and 512. For GPU, the best block size is 128, which gives the lowest mean time of 1.439 ms.
+The performance of GPU is far better than CPU. 
+The block size affects GPU performance slightly, but the GPU remains consistently fast across all tested sizes. For GPU, the best block size is 512, which gives the lowest mean time of 1.329 ms.
 
 \begin{table}[htbp]
 \centering
 \caption{Average CPU and GPU processing times by block size}
 \begin{tabular}{rrr}
- \toprule
+\toprule
 Block size & CPU (ms) & GPU (ms) \\
- \midrule
-32  & 796.437 & 151.725 \\
-64  & 771.277 & 1.834   \\
-128 & 773.547 & 1.439   \\
-256 & 773.504 & 1.536   \\
-512 & 779.308 & 1.499   \\
+\midrule
+32 & 833.801 & 1.429 \\
+64 & 828.513 & 1.658 \\
+128 & 837.683 & 1.653 \\
+256 & 898.968 & 1.421 \\
+512 & 827.378 & 1.329 \\
 \bottomrule
 \end{tabular}
 \end{table}
