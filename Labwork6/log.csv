@@ -1,0 +1,25 @@
+CPU, 19.566774
+GPU,binarize,64,0.270128
+GPU,brightness,64,0.172615
+GPU,blend,64,0.296354
+GPU,binarize,64,0.520945
+GPU,brightness,64,0.192165
+GPU,blend,64,0.776768
+GPU,binarize,64,0.211477
+GPU,brightness,64,0.089407
+GPU,blend,64,0.284195
+GPU,binarize,64,0.252485
+GPU,brightness,64,0.092745
+GPU,blend,64,0.284672
+GPU,binarize,64,0.244379
+GPU,brightness,64,0.089884
+GPU,blend,64,0.281334
+GPU,binarize,64,0.213385
+GPU,brightness,64,0.084639
+GPU,blend,64,0.292778
+GPU,binarize,64,0.217199
+GPU,brightness,64,0.094175
+GPU,blend,64,0.283003
+GPU,binarize,64,0.216246
+GPU,brightness,64,0.100851
+GPU,blend,64,0.289679
